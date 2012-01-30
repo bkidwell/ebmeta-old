@@ -1,4 +1,4 @@
-"""TODO: description."""
+"""Backup FILE.EPUB to an embedded file inside FILE.EPUB."""
 
 import logging
 import os.path

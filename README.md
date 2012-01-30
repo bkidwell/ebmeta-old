@@ -1,7 +1,24 @@
 # Epub Metadata Editor
 
 
-`epubmeta` is a tool...
+`epubmeta` is a tool for editing metadata in an Epub file. When the
+first edit is made, the entire Epub file is backed up to a file embedded
+in the Epub package in the path `META-INF/source/`, and the original
+metadata is backed up to `META-INF/original_metadata.yaml` for each
+resetting of only the fields edited by this program.
+
+Calibre is used to write metadata changes to the Epub file.
+
+Fields that are available for editing are:
+
+* title; title sort
+* authors; author sort
+* publication date; publisher
+* book producer
+* isbn; uuid; language
+* tags; rating
+* series; series index
+* description
 
 
 ## Requirements
@@ -13,6 +30,7 @@
 * pandoc -- all purpose converter to and from Markdown syntax
 * Python 2.7
 * YAML for Python -- minimal config / serialization syntax
+* zenity -- dialog boxes for scripts
 * zip -- command line tool for writing/updating Zip files from the
   InfoZip package
 
@@ -22,7 +40,7 @@ Install Calibre on a Unix box:
 
 Ubuntu packages for the rest of the requirements:
 
-    sudo apt-get install pandoc python-beautifulsoup python-yaml
+    sudo apt-get install pandoc python-beautifulsoup python-yaml zenity
 
 
 ## Installation
@@ -64,3 +82,19 @@ passes command line arguments through to epubmeta.
 Copies FILE.EPUB to `./META-INF/source/FILE.EPUB` file within the
 FILE.EPUB package. If you screw up the outer FILE.EPUB later on, you can
 just extract the backup using a Zip archiving tool.
+
+**Display metadata on the command line**:
+
+    epubmeta display FILE.EPUB
+
+**Edit metadata in a popup dialog box**:
+
+    epubmeta edit FILE.EPUB
+
+**Reset metadata to state before first edit with this program**:
+
+    epubmeta reset FILE.EPUB
+
+**Get all command line help**:
+
+    epubmeta --help

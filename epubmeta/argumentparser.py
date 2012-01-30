@@ -8,14 +8,15 @@ import epubmeta
 log = logging.getLogger('argumentparser')
 
 help="""\
-TODO: Description
+epubmeta is a tool for editing metadata in an Epub file.
 """
 
 epilog="""\
 actions:
   backup       Backup FILE.EPUB to an embedded file inside FILE.EPUB
   display      Display metadata from FILE.EPUB
-  newid        Assign a new UUID to this EPUB file
+  edit         Edit metadata using zenity
+  reset        Reset metadata back to what it was before the first edit
   version      Print epubmeta version number
 
 """
@@ -25,7 +26,7 @@ def setup_args(parser):
 
     parser.add_argument(
         'action', nargs='?', metavar='action',
-        choices=['backup', 'display', 'newid', 'version'],
+        choices=['backup', 'display', 'edit', 'reset', 'version'],
         help="Which action to perform."
     )
     parser.add_argument(

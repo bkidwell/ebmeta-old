@@ -4,7 +4,10 @@ import datetime
 from BeautifulSoup import BeautifulStoneSoup
 import re
 import logging
+from string import Template
+import yaml
 from epubmeta import shell
+from epubmeta import template
 
 log = logging.getLogger('meta')
 
@@ -33,6 +36,19 @@ def formatDate(txt):
 
 def htmlToMarkdown(txt):
     return shell.pipe(["pandoc", "--no-wrap", "--from", "html", "--to", "markdown"], txt).strip()
+
+yamlSimple = re.compile("^[A-Za-z0-9\.]+$")
+yamlNewline = re.compile("^", re.MULTILINE)
+def yamlValue(txt, multiline=False):
+    if txt == None: return '~'
+    if len(txt) == 0: return '~'
+    if type(txt) is list:
+        return '[' +   ', '.join(yamlValue(x) for x in txt)   + ']'
+    if yamlSimple.match(txt): return txt
+    if multiline:
+        return "|\n" + yamlNewline.sub("  ", txt)
+    else:
+        return '"' + txt.replace('"', '\\x22') + '"'
 
 class Metadata(dict):
     def __init__(self, txt):
@@ -84,3 +100,10 @@ class Metadata(dict):
             txt.append("{}: {}".format(key.ljust(key_width, ' '), value))
 
         return "\n".join(txt)
+
+    def yaml(self):
+        templ = template.get_file_content('metadata.yaml')
+        d = dict()
+        for key in self.keys():
+            d[key.replace(' ', '_')] = yamlValue(self[key], key == 'description')
+        return Template(templ).substitute(d)

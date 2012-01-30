@@ -1,4 +1,4 @@
-"""TODO: description."""
+"""`epubmeta` is a tool for editing metadata in an Epub file.."""
 
 import logging
 import sys

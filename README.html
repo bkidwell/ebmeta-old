@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+</head>
+<body>
+<h1 id="epub-metadata-editor">Epub Metadata Editor</h1>
+<p><code>epubmeta</code> is a tool for editing metadata in an Epub file. When the first edit is made, the entire Epub file is backed up to a file embedded in the Epub package in the path <code>META-INF/source/</code>, and the original metadata is backed up to <code>META-INF/original_metadata.yaml</code> for each resetting of only the fields edited by this program.</p>
+<p>Calibre is used to write metadata changes to the Epub file.</p>
+<p>Fields that are available for editing are:</p>
+<ul>
+<li>title; title sort</li>
+<li>authors; author sort</li>
+<li>publication date; publisher</li>
+<li>book producer</li>
+<li>isbn; uuid; language</li>
+<li>tags; rating</li>
+<li>series; series index</li>
+<li>description</li>
+</ul>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>Beautiful Soup -- HTML/XML stream parsing and manipulation for Python</li>
+<li>Calibre (Calibre's <code>ebook-convert</code> command is used to manipulate and build EPUB package files.)</li>
+<li>pandoc -- all purpose converter to and from Markdown syntax</li>
+<li>Python 2.7</li>
+<li>YAML for Python -- minimal config / serialization syntax</li>
+<li>zenity -- dialog boxes for scripts</li>
+<li>zip -- command line tool for writing/updating Zip files from the InfoZip package</li>
+</ul>
+<p>Install Calibre on a Unix box:</p>
+<pre><code>sudo python -c &quot;import sys; py3 = sys.version_info[0] &gt; 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()&quot;
+</code></pre>
+<p>Ubuntu packages for the rest of the requirements:</p>
+<pre><code>sudo apt-get install pandoc python-beautifulsoup python-yaml zenity
+</code></pre>
+<h2 id="installation">Installation</h2>
+<p>No installation script is provided. The simplest way to install mdepub is to download the source as a <code>.zip</code> or <code>.tar.gz</code>, or <code>git clone</code>. Put the package files in <code>~/Apps/epubmeta</code> and then do this:</p>
+<pre><code>chmod +x ~/Apps/epubmeta/__main__.py
+ln --symbolic ~/Apps/epubmeta/__main.py__ ~/bin/epubmeta
+</code></pre>
+<p>(Make sure <code>~/bin</code> is in your <code>$PATH</code> variable when you run <code>epubmeta</code>.)</p>
+<h3 id="windows">Windows</h3>
+<p><code>epubmeta</code> should work in Windows as well. Make sure all your requirements are installed and make sure you can run <code>python</code>, <code>pandoc</code>, and <code>ebook-convert</code> by just calling their name from the command line. (You probably will have to edit your <code>$PATH</code> environment variable.)</p>
+<p>To invoke <code>epubmeta</code>, you can either do</p>
+<pre><code>python -m [path to...]\epubmeta.zip [epubmeta arguments]
+</code></pre>
+<p>Or create a batch file in your <code>$PATH</code> that calls Python in this way and passes command line arguments through to epubmeta.</p>
+<h2 id="usage">Usage</h2>
+<p><strong>Backup an epub file as an embedded file within itself</strong>:</p>
+<pre><code>epubmeta backup FILE.EPUB
+</code></pre>
+<p>Copies FILE.EPUB to <code>./META-INF/source/FILE.EPUB</code> file within the FILE.EPUB package. If you screw up the outer FILE.EPUB later on, you can just extract the backup using a Zip archiving tool.</p>
+<p><strong>Display metadata on the command line</strong>:</p>
+<pre><code>epubmeta display FILE.EPUB
+</code></pre>
+<p><strong>Edit metadata in a popup dialog box</strong>:</p>
+<pre><code>epubmeta edit FILE.EPUB
+</code></pre>
+<p><strong>Reset metadata to state before first edit with this program</strong>:</p>
+<pre><code>epubmeta reset FILE.EPUB
+</code></pre>
+<p><strong>Get all command line help</strong>:</p>
+<pre><code>epubmeta --help
+</code></pre>
+</body>
+</html>

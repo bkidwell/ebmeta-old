@@ -2,5 +2,6 @@
 
 import backup
 import display
-import newid
+import edit
+import reset
 import version
