@@ -129,7 +129,12 @@ def setUuid(uuid_txt):
     log.debug("new uuid: %s", uuid_txt)
 
     soup = BeautifulStoneSoup(metadata)
-    id = soup.find('dc:identifier', attrs={'opf:scheme':'uuid'})
+    id = (
+        soup.find('dc:identifier', attrs={'opf:scheme':'uuid'}) or
+        soup.find('dc:identifier', attrs={'opf:scheme':'UUID'}) or
+        soup.find('dc:identifier', attrs={'scheme':'uuid'}) or
+        soup.find('dc:identifier', attrs={'scheme':'UUID'})
+    )
     if not id:
         m = soup.find('metadata')
         id = Tag(soup, 'dc:identifier')
