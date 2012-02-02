@@ -118,8 +118,13 @@ def setUuid(uuid_txt):
     path = epubmeta.arguments.filename
 
     metadata = None
+    metapath = "content.opf"
     with ZipFile(path, 'r') as zip:
-        metadata = zip.read("content.opf")
+        try:
+            metadata = zip.read(metapath)
+        except KeyError:
+            metapath = "OEBPS/content.opf"
+            metadata = zip.read(metapath)
 
     log.debug("new uuid: %s", uuid_txt)
 
@@ -137,9 +142,9 @@ def setUuid(uuid_txt):
     #[node.extract() for node in id.findAll()] # remove contents
     #id.insert(0, uuid) # insert uuid
 
-    shell.run(["zip", "-d", path, "content.opf"])
+    shell.run(["zip", "-d", path, metapath])
     with ZipFile(path, 'a') as zip:
-        zip.writestr("content.opf", str(soup))
+        zip.writestr(metapath, str(soup))
 
 def quote(text):
     """Change " to \\"."""

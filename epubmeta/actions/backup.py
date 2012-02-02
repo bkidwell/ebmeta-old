@@ -25,7 +25,7 @@ def run():
 
         #if arguments.source:
         #    zip.write(getFN("zip"), "META-INF/source/mdepub_source.zip")
-        metadata = zip.read("content.opf")
+        #metadata = zip.read("content.opf")
 
     if found_backup:
         log.debug("Skipping backup because a backup was found in the Epub package in \"META-INF/source/\".")

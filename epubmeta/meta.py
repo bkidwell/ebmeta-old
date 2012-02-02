@@ -59,15 +59,28 @@ class Metadata(dict):
         soup = BeautifulStoneSoup(txt, convertEntities=BeautifulStoneSoup.ALL_ENTITIES)
         self['title'] = getStr(soup.find('dc:title'))
         self['title sort'] = getAttr(soup.find('meta', attrs={'name':'calibre:title_sort'}), 'content')
-        authors = soup.findAll('dc:creator', attrs={'opf:role':'aut'})
+        authors = (
+            soup.findAll('dc:creator', attrs={'opf:role':'aut'}) or
+            soup.findAll('dc:creator', attrs={'role':'aut'})
+        )
         self['authors'] = " & ".join([getStr(author) for author in authors])
-        self['author sort'] = getAttr(authors[0], 'opf:file-as') if authors else None
+        self['author sort'] = None
+        if authors:
+            self['author sort'] = (
+                getAttr(authors[0], 'opf:file-as') or
+                getAttr(authors[0], 'file-as')
+            )
         self['publication date'] = formatDate( getStr(soup.find('dc:date')) )
         self['publisher'] = getStr(soup.find('dc:publisher'))
-        self['book producer'] = getStr( soup.find('dc:contributor', attrs={'opf:role':'bkp'}) )
+        self['book producer'] = (
+            getStr( soup.find('dc:contributor', attrs={'opf:role':'bkp'}) ) or
+            getStr( soup.find('dc:contributor', attrs={'role':'bkp'}) )
+        )
         self['isbn'] = (
             getStr( soup.find('dc:identifier', attrs={'opf:scheme':'ISBN'}) ) or
-            getStr( soup.find('dc:identifier', attrs={'opf:scheme':'isbn'}) )
+            getStr( soup.find('dc:identifier', attrs={'opf:scheme':'isbn'}) ) or
+            getStr( soup.find('dc:identifier', attrs={'scheme':'ISBN'}) ) or
+            getStr( soup.find('dc:identifier', attrs={'scheme':'isbn'}) )
         )
         self['language'] = getStr(soup.find('dc:language'))
         self['rating'] = getAttr(soup.find('meta', attrs={'name':'calibre:rating'}), 'content')
@@ -75,7 +88,9 @@ class Metadata(dict):
         self['series index']  = getAttr(soup.find('meta', attrs={'name':'calibre:series_index'}), 'content')
         self['uuid'] = (
             getStr(soup.find('dc:identifier', attrs={'opf:scheme':'uuid'})) or
-            getStr(soup.find('dc:identifier', attrs={'opf:scheme':'UUID'}))
+            getStr(soup.find('dc:identifier', attrs={'opf:scheme':'UUID'})) or
+            getStr(soup.find('dc:identifier', attrs={'scheme':'uuid'})) or
+            getStr(soup.find('dc:identifier', attrs={'scheme':'UUID'}))
         )
         tags = soup.findAll('dc:subject')
         self['tags'] = []
