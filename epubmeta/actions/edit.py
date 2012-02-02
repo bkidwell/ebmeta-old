@@ -28,7 +28,7 @@ def run(new_yaml_text=None):
         '--width=700',
         '--height=550',
         '--text-info',
-        '--font=Monospace',
+        # '--font=Monospace',
         '--editable'
     ]
     if new_yaml_text:
@@ -79,7 +79,7 @@ def writeChanges(changes):
 
     args = [
         "ebook-meta",
-        path
+        '"{}"'.format(path)
     ]
     for a, b in (
         ('author-sort',   'author sort'),
