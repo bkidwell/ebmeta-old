@@ -82,6 +82,10 @@ class Metadata(dict):
             getStr( soup.find('dc:identifier', attrs={'scheme':'ISBN'}) ) or
             getStr( soup.find('dc:identifier', attrs={'scheme':'isbn'}) )
         )
+        if not self['isbn']:
+            for bookid in [getStr(x) for x in soup.findAll('dc:identifier')]:
+                if bookid and ('isbn' in bookid.lower()):
+                    self['isbn'] = bookid.split(':')[-1]
         self['language'] = getStr(soup.find('dc:language'))
         self['rating'] = getAttr(soup.find('meta', attrs={'name':'calibre:rating'}), 'content')
         self['series'] = getAttr(soup.find('meta', attrs={'name':'calibre:series'}), 'content')
