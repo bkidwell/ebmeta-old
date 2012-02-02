@@ -17,7 +17,10 @@ def run(new_yaml_text=None):
     path = epubmeta.arguments.filename
 
     with ZipFile(path, 'r') as zip:
-        content_opf = zip.read("content.opf")
+        try:
+            content_opf = zip.read("content.opf")
+        except KeyError:
+            content_opf = zip.read("OEBPS/content.opf")
 
     metadata = Metadata(content_opf)
     yaml_text = metadata.yaml()

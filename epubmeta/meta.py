@@ -61,7 +61,7 @@ class Metadata(dict):
         self['title sort'] = getAttr(soup.find('meta', attrs={'name':'calibre:title_sort'}), 'content')
         authors = soup.findAll('dc:creator', attrs={'opf:role':'aut'})
         self['authors'] = " & ".join([getStr(author) for author in authors])
-        self['author sort'] = getAttr(authors[0], 'opf:file-as')
+        self['author sort'] = getAttr(authors[0], 'opf:file-as') if authors else None
         self['publication date'] = formatDate( getStr(soup.find('dc:date')) )
         self['publisher'] = getStr(soup.find('dc:publisher'))
         self['book producer'] = getStr( soup.find('dc:contributor', attrs={'opf:role':'bkp'}) )
