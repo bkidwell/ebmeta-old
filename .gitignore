@@ -1,2 +1,4 @@
 *.pyc
 *.komodoproject
+*.e4p
+.eric4project

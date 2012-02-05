@@ -28,11 +28,11 @@ isodate = re.compile("([\d]+)-([\d]+)-([\d]+)")
 def formatDate(txt):
     m = isodate.match(txt)
     if not m: return None
-    return "{} {} {}".format(
+    return " ".join((
         m.group(3),
         months[int(m.group(2)) - 1],
         m.group(1)
-    )
+    ))
 
 def htmlToMarkdown(txt):
     return shell.pipe(["pandoc", "--no-wrap", "--from", "html", "--to", "markdown"], txt).strip()
