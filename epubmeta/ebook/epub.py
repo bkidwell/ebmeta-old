@@ -1,10 +1,10 @@
 import logging
 from zipfile import ZipFile
-import ebook
+from . import Ebook
 
 log = logging.getLogger('epub')
 
-class Epub(ebook.Ebook):
+class Epub(Ebook):
     def __init__(self, path):
         self.type = 'epub'
         self.__content_opf = None

@@ -6,8 +6,10 @@ import yaml
 from zipfile import ZipFile
 import epubmeta
 from epubmeta import shell
-from epubmeta.meta import Metadata
 from epubmeta.actions import backup
+from epubmeta.ebook import ebook_factory
+from epubmeta.meta import Metadata
+import zenity
 
 log = logging.getLogger('display')
 
@@ -15,29 +17,18 @@ def run(new_yaml_text=None):
     """Run this action."""
 
     path = epubmeta.arguments.filename
-
-    with ZipFile(path, 'r') as zip:
-        try:
-            content_opf = zip.read("content.opf")
-        except KeyError:
-            content_opf = zip.read("OEBPS/content.opf")
-
-    metadata = Metadata(content_opf)
+    ebook = ebook_factory(path)
+    metadata = ebook.metadata
     yaml_text = metadata.yaml()
 
-    args = [
-        'zenity',
-        '--title', "Edit EPUB Metadata",
-        '--width=700',
-        '--height=550',
-        '--text-info',
-        # '--font=Monospace',
-        '--editable'
-    ]
     if new_yaml_text:
         result = new_yaml_text
     else:
-        result = shell.pipe(args, yaml_text)
+        try:
+            result = zenity.edit_string(yaml_text)
+        except zenity.ZenityCancelled:
+            log.debug("Operation was cancelled.")
+            return
 
     if result.strip() == yaml_text.strip():
         log.debug("No change was made.")
@@ -69,8 +60,6 @@ def run(new_yaml_text=None):
                 zip.writestr("META-INF/original_metadata.yaml", yaml_text)
 
         writeChanges(changes)
-    else:
-        log.debug("Operation was cancelled.")
 
 def writeChanges(changes):
     """Write the metadata in the given dictionary into the Epub file."""
