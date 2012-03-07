@@ -12,4 +12,4 @@ def run():
 
     path = ebmeta.arguments.filename
     ebook = ebook_factory(path)
-    print unicode(ebook.metadata)
+    print unicode(ebook.opf)

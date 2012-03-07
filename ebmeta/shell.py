@@ -14,11 +14,11 @@ def run(args, shell=False):
     p = subprocess.Popen(args, shell=shell)
     os.waitpid(p.pid, 0)
 
-def pipe(args, input):
+def pipe(args, input="", shell=False):
     """Run args[0] with arguments args[1:] and return standard output."""
 
     log.debug("pipe(): %s", args)
-    p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=shell)
     return p.communicate(input)[0].strip()
 
 def pipe_with_exitcode(args, input):

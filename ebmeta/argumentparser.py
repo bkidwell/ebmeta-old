@@ -8,17 +8,17 @@ import ebmeta
 log = logging.getLogger('argumentparser')
 
 help="""\
-ebmeta is a tool for editing metadata in an ebook file (Epub,
+ebmeta is a tool for editing metadata in a ebook files (Epub,
 Mobipocket, or PDF).
 """
 
 epilog="""\
 actions:
-  backup       Backup FILE to an ./.backup/FILE.backup
-  display      Display metadata from FILE
-  edit         Edit metadata using zenity
-  reset        Reset metadata back to what it was before the first edit
-  version      Print epubmeta version number
+  backup    Backup FILE to an ./.backup/FILE.backup
+  display   Display metadata from FILE
+  edit      Edit metadata using zenity
+  reset     Reset metadata back to what it was before the first edit
+  version   Print ebmeta version number
 
 """
 
@@ -41,6 +41,6 @@ class ArgumentParser(argparse.ArgumentParser):
     def __init__(self):
         super(ArgumentParser, self).__init__(
             formatter_class=argparse.RawDescriptionHelpFormatter,
-            description=help, epilog=epilog, prog=epubmeta.PROGRAM_NAME
+            description=help, epilog=epilog, prog=ebmeta.PROGRAM_NAME
         )
         setup_args(self)

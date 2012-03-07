@@ -1,4 +1,4 @@
-"""`epubmeta` is a tool for editing metadata in an Epub file.."""
+"""`epubmeta` is a tool for editing metadata in ebook files file.."""
 
 import logging
 import sys

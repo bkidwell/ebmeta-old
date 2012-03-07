@@ -1,12 +1,10 @@
 """Reset metadata back to what it was before the first edit."""
 
 import logging
-import yaml
-from zipfile import ZipFile
+import os
+import os.path
+import shutil
 import ebmeta
-from ebmeta import shell
-from ebmeta.meta import Metadata
-from ebmeta.actions import edit
 
 log = logging.getLogger('display')
 
@@ -14,8 +12,17 @@ def run():
     """Run this action."""
 
     path = ebmeta.arguments.filename
+    abspath = os.path.abspath(path)
+    folder = os.path.dirname(abspath)
 
-    with ZipFile(path, 'r') as zip:
-        yaml_text = zip.read("META-INF/original_metadata.yaml")
+    backup_folder = os.path.join(folder, ".backup")
+    backup_path = os.path.join(
+        backup_folder, os.path.basename(path) + ".backup"
+    )
 
-    edit.run(yaml_text)
+    if not os.path.exists(backup_path):
+        print "Backup file not found in \"{}\". Can't restore metadata.".format(backup_path)
+        exit(1)
+
+    shutil.copy2(backup_path, abspath)
+    log.debug("Restored \"{}\" from backup.".format(abspath))

@@ -4,12 +4,10 @@ import datetime
 from BeautifulSoup import BeautifulStoneSoup
 import re
 import logging
-from string import Template
-import yaml
 from ebmeta import shell
 from ebmeta import template
 
-log = logging.getLogger('meta')
+log = logging.getLogger('opfreader')
 
 months = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec".split(',')
 
@@ -26,6 +24,7 @@ def getStr(soup):
 
 isodate = re.compile("([\d]+)-([\d]+)-([\d]+)")
 def formatDate(txt):
+    if not txt: return None
     m = isodate.match(txt)
     if not m: return None
     return " ".join((
@@ -37,25 +36,11 @@ def formatDate(txt):
 def htmlToMarkdown(txt):
     return shell.pipe(["pandoc", "--no-wrap", "--from", "html", "--to", "markdown"], txt).strip()
 
-yamlSimple = re.compile("^[A-Za-z0-9\.]+$")
-yamlNewline = re.compile("^", re.MULTILINE)
-def yamlValue(txt, multiline=False):
-    if txt == None: return '~'
-    if len(txt) == 0: return '~'
-    if type(txt) is list:
-        return '[' +   ', '.join(yamlValue(x) for x in txt)   + ']'
-    if yamlSimple.match(txt): return txt
-    if multiline:
-        return "|\n" + yamlNewline.sub("  ", txt)
-    else:
-        return '"' + txt.replace('"', '\\x22') + '"'
-
-class Metadata(dict):
+class Opf(dict):
     def __init__(self, txt):
-        if txt[:100].find("<?xml") >= 0:
-            self.init_opf(txt)
+        if not (txt[:100].find("<?xml") >= 0):
+            raise ValueError("Not an XML stream.")
 
-    def init_opf(self, txt):
         soup = BeautifulStoneSoup(txt, convertEntities=BeautifulStoneSoup.ALL_ENTITIES)
         self['title'] = getStr(soup.find('dc:title'))
         self['title sort'] = getAttr(soup.find('meta', attrs={'name':'calibre:title_sort'}), 'content')
@@ -120,10 +105,3 @@ class Metadata(dict):
             txt.append("{}: {}".format(key.ljust(key_width, ' '), value))
 
         return "\n".join(txt)
-
-    def yaml(self):
-        templ = template.get_file_content('metadata.yaml')
-        d = dict()
-        for key in self.keys():
-            d[key.replace(' ', '_')] = yamlValue(self[key], key == 'description')
-        return Template(templ).substitute(d)

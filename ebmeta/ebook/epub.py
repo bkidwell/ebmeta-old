@@ -7,17 +7,17 @@ log = logging.getLogger('epub')
 class Epub(Ebook):
     def __init__(self, path):
         self.type = 'epub'
-        self.__content_opf = None
+        self.__content_opf_str = None
         super(Epub, self).__init__(path)
 
-    def __get_content_opf(self):
-        if self.__content_opf: return self.__content_opf
+    def __get_content_opf_str(self):
+        if self.__content_opf_str: return self.__content_opf_str
 
         with ZipFile(self.path, 'r') as zip:
             try:
-                self.__content_opf = zip.read("content.opf")
+                self.__content_opf_str = zip.read("content.opf")
             except KeyError:
-                self.__content_opf = zip.read("OEBPS/content.opf")
-        return self.__content_opf
+                self.__content_opf_str = zip.read("OEBPS/content.opf")
+        return self.__content_opf_str
 
-    content_opf = property(__get_content_opf)
+    content_opf_str = property(__get_content_opf_str)

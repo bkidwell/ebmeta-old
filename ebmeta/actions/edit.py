@@ -6,10 +6,11 @@ import yaml
 from zipfile import ZipFile
 import ebmeta
 from ebmeta import shell
+from ebmeta import template
 from ebmeta.actions import backup
 from ebmeta.ebook import ebook_factory
-from ebmeta.meta import Metadata
-import zenity
+from ebmeta.yamlwriter import opf_to_yaml
+from ebmeta.zenity import edit_string, ZenityCancelled
 
 log = logging.getLogger('display')
 
@@ -18,51 +19,50 @@ def run(new_yaml_text=None):
 
     path = ebmeta.arguments.filename
     ebook = ebook_factory(path)
-    metadata = ebook.metadata
-    yaml_text = metadata.yaml()
+    opf = ebook.opf
+    template_str = template.get_file_content("{}.yaml".format(ebook.type))
+    yaml_text = opf_to_yaml(opf, template_str)
 
     if new_yaml_text:
         result = new_yaml_text
     else:
         try:
-            result = zenity.edit_string(yaml_text)
-        except zenity.ZenityCancelled:
+            result = edit_string(yaml_text)
+        except ZenityCancelled:
             log.debug("Operation was cancelled.")
             return
 
     if result.strip() == yaml_text.strip():
         log.debug("No change was made.")
     elif result:
-        log.debug("Writing changes to Epub file.")
+        log.debug("Writing changes to ebook file.")
         d1 = yaml.load(yaml_text)
         d2 = yaml.load(result)
-        if not d2.get('uuid'):
+        if (ebook.type == 'epub') and (not d2.get('uuid')):
             # ensure the new metadata has a uuid
             d2['uuid'] = ebmeta.new_id()
         changes = dict()
         for key in d2.keys():
             if key == 'description':
-                if d1[key].strip() != d2[key].strip(): changes[key] = d2[key]
+                if (d1[key] or "").strip() != (d2[key] or "").strip(): changes[key] = d2[key]
+            if key == 'authors':
+                if d1[key] != d2[key]:
+                    changes[key] = d2[key]
+                    changes['author sort'] = d2['author sort']
+            if key == 'title':
+                if d1[key] != d2[key]:
+                    changes[key] = d2[key]
+                    changes['title sort'] = d2['title sort']
             else:
                 if d1[key] != d2[key]: changes[key] = d2[key]
         log.debug("The following keys changed: %s", ' '.join(changes.keys()))
 
         backup.run() # backup only if backup doesn't exist
-        with ZipFile(path, 'a') as zip:
-            # backup metadata found in content.opf, for 'reset' action
-            names = zip.namelist()
-            found_metadata = False
-            for member in zip.namelist():
-                if member == "META-INF/original_metadata.yaml":
-                    found_metadata = True
-                    break
-            if not found_metadata:
-                zip.writestr("META-INF/original_metadata.yaml", yaml_text)
 
-        writeChanges(changes)
+        writeChanges(ebook, changes)
 
-def writeChanges(changes):
-    """Write the metadata in the given dictionary into the Epub file."""
+def writeChanges(ebook, changes):
+    """Write the metadata in the given dictionary into the ebook file."""
 
     path = ebmeta.arguments.filename
 
@@ -74,7 +74,6 @@ def writeChanges(changes):
         '"{}"'.format(path)
     ]
     for a, b in (
-        ('author-sort',   'author sort'),
         ('authors',       'authors'),
         ('book-producer', 'book producer'),
         ('isbn',          'isbn'),
@@ -84,9 +83,17 @@ def writeChanges(changes):
         ('rating',        'rating'),
         ('series',        'series'),
         ('series-index',  'series index'),
-        ('title-sort',    'title sort'),
+        ('title',         'title')
     ):
         if changes.has_key(b): args.append("--{}=\"{}\"".format(a, quote(changes[b])))
+
+    for a, b in (
+        ('author-sort',   'author sort'),
+        ('title-sort',    'title sort')
+    ):
+        if changes.has_key(b):
+            if changes[b]:
+                args.append("--{}=\"{}\"".format(a, quote(changes[b])))
 
     if changes.has_key('description'):
         description = shell.pipe(["pandoc"], changes['description'])
@@ -97,9 +104,12 @@ def writeChanges(changes):
 
     if len(args) > 2:
         # Run ebook-meta
-        shell.run(" ".join(args), shell=True)
+        # shell.run(" ".join(args), shell=True)
+        shell.pipe(" ".join(args), shell=True)
 
-    if(changes.has_key('uuid')): setUuid(changes['uuid'])
+    if ebook.type == 'epub':
+        # set uuid only for Epub files
+        if(changes.has_key('uuid')): setUuid(changes['uuid'])
 
 def setUuid(uuid_txt):
     """Write a new uuid to the Epub file."""

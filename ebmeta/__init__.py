@@ -12,7 +12,6 @@ import logging
 import os
 import sys
 import uuid
-import yaml
 from ebmeta.argumentparser import ArgumentParser
 
 def new_id():
