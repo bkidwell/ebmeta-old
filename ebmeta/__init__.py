@@ -1,9 +1,9 @@
 """
-epubmeta package
+ebmeta package
 """
 
 VERSION = "0.1"
-PROGRAM_NAME = "epubmeta"
+PROGRAM_NAME = "ebmeta"
 
 arguments = None # global container for command line arguments
 log = None
@@ -13,7 +13,7 @@ import os
 import sys
 import uuid
 import yaml
-from epubmeta.argumentparser import ArgumentParser
+from ebmeta.argumentparser import ArgumentParser
 
 def new_id():
     """Generate a new random UUID"""
@@ -27,7 +27,7 @@ def init():
     global log
 
     logging.basicConfig(level=logging.DEBUG)
-    log = logging.getLogger('epubmeta')
+    log = logging.getLogger('ebmeta')
 
     project_path = os.getcwd()
     log.debug("Working path: %s", project_path)

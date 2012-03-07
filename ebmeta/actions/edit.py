@@ -4,11 +4,11 @@ from BeautifulSoup import BeautifulStoneSoup, Tag
 import logging
 import yaml
 from zipfile import ZipFile
-import epubmeta
-from epubmeta import shell
-from epubmeta.actions import backup
-from epubmeta.ebook import ebook_factory
-from epubmeta.meta import Metadata
+import ebmeta
+from ebmeta import shell
+from ebmeta.actions import backup
+from ebmeta.ebook import ebook_factory
+from ebmeta.meta import Metadata
 import zenity
 
 log = logging.getLogger('display')
@@ -16,7 +16,7 @@ log = logging.getLogger('display')
 def run(new_yaml_text=None):
     """Run this action."""
 
-    path = epubmeta.arguments.filename
+    path = ebmeta.arguments.filename
     ebook = ebook_factory(path)
     metadata = ebook.metadata
     yaml_text = metadata.yaml()
@@ -38,7 +38,7 @@ def run(new_yaml_text=None):
         d2 = yaml.load(result)
         if not d2.get('uuid'):
             # ensure the new metadata has a uuid
-            d2['uuid'] = epubmeta.new_id()
+            d2['uuid'] = ebmeta.new_id()
         changes = dict()
         for key in d2.keys():
             if key == 'description':
@@ -64,7 +64,7 @@ def run(new_yaml_text=None):
 def writeChanges(changes):
     """Write the metadata in the given dictionary into the Epub file."""
 
-    path = epubmeta.arguments.filename
+    path = ebmeta.arguments.filename
 
     for key in changes.keys():
         if changes[key] == None: changes[key] = ""
@@ -104,7 +104,7 @@ def writeChanges(changes):
 def setUuid(uuid_txt):
     """Write a new uuid to the Epub file."""
 
-    path = epubmeta.arguments.filename
+    path = ebmeta.arguments.filename
 
     metadata = None
     metapath = "content.opf"

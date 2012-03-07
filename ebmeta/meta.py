@@ -1,4 +1,4 @@
-"""Epub metadata."""
+"""Ebook metadata."""
 
 import datetime
 from BeautifulSoup import BeautifulStoneSoup
@@ -6,8 +6,8 @@ import re
 import logging
 from string import Template
 import yaml
-from epubmeta import shell
-from epubmeta import template
+from ebmeta import shell
+from ebmeta import template
 
 log = logging.getLogger('meta')
 

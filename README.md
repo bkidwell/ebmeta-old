@@ -1,13 +1,12 @@
-# Epub Metadata Editor
+# Ebook Metadata Editor
 
 
-`epubmeta` is a tool for editing metadata in an Epub file. When the
-first edit is made, the entire Epub file is backed up to a file embedded
-in the Epub package in the path `META-INF/source/`, and the original
-metadata is backed up to `META-INF/original_metadata.yaml` for each
-resetting of only the fields edited by this program.
+`ebmeta` is a tool for editing metadata in an ebook file (Epub,
+Mobipocket, or PDF). When the first edit is made, the entire ebook file
+is backed up to `./.backup/FILE.backup` under the folder where the
+working file is, to allow for safely resetting.
 
-Calibre is used to write metadata changes to the Epub file.
+Calibre is used to write metadata changes to the ebook file.
 
 Fields that are available for editing are:
 
@@ -46,55 +45,55 @@ Ubuntu packages for the rest of the requirements:
 ## Installation
 
 
-No installation script is provided. The simplest way to install mdepub
+No installation script is provided. The simplest way to install ebmeta
 is to download the source as a `.zip` or `.tar.gz`, or `git clone`. Put
-the package files in `~/Apps/epubmeta` and then do this:
+the package files in `~/Apps/ebmeta` and then do this:
 
-    chmod +x ~/Apps/epubmeta/__main__.py
-    ln --symbolic ~/Apps/epubmeta/__main.py__ ~/bin/epubmeta
+    chmod +x ~/Apps/ebmeta/__main__.py
+    ln --symbolic ~/Apps/ebmeta/__main.py__ ~/bin/ebmeta
 
-(Make sure `~/bin` is in your `$PATH` variable when you run `epubmeta`.)
+(Make sure `~/bin` is in your `$PATH` variable when you run `ebmeta`.)
 
 
 ### Windows
 
 
-`epubmeta` should work in Windows as well. Make sure all your
-requirements are installed and make sure you can run `python`, `pandoc`,
-and `ebook-convert` by just calling their name from the command line.
-(You probably will have to edit your `$PATH` environment variable.)
+`ebmeta` should work in Windows as well. Make sure all your requirements
+are installed and make sure you can run `python`, `pandoc`, and
+`ebook-convert` by just calling their name from the command line. (You
+probably will have to edit your `$PATH` environment variable.)
 
-To invoke `epubmeta`, you can either do
+To invoke `ebmeta`, you can either do
 
-    python -m [path to...]\epubmeta.zip [epubmeta arguments]
+    python -m [path to...]\ebmeta.zip [ebmeta arguments]
 
 Or create a batch file in your `$PATH` that calls Python in this way and
-passes command line arguments through to epubmeta.
+passes command line arguments through to ebmeta.
 
 
 ## Usage
 
 
-**Backup an epub file as an embedded file within itself**:
+**Backup an ebook file as an embedded file within itself**:
 
-    epubmeta backup FILE.EPUB
+    ebmeta backup FILE
 
-Copies FILE.EPUB to `./META-INF/source/FILE.EPUB` file within the
-FILE.EPUB package. If you screw up the outer FILE.EPUB later on, you can
-just extract the backup using a Zip archiving tool.
+Copies `FILE` to `./.backup/FILE.backup` under the folder containing
+`FILE`. If you screw up the outer `FILE` later on, you can just extract
+the backup using a Zip archiving tool.
 
 **Display metadata on the command line**:
 
-    epubmeta display FILE.EPUB
+    ebmeta display FILE
 
 **Edit metadata in a popup dialog box**:
 
-    epubmeta edit FILE.EPUB
+    ebmeta edit FILE
 
 **Reset metadata to state before first edit with this program**:
 
-    epubmeta reset FILE.EPUB
+    ebmeta reset FILE
 
 **Get all command line help**:
 
-    epubmeta --help
+    ebmeta --help

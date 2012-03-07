@@ -1,7 +1,7 @@
 """Methods for manipulating an ebook file."""
 
 import logging
-from epubmeta.meta import Metadata
+from ebmeta.meta import Metadata
 #from epubmeta.ebook import *
 
 log = logging.getLogger('ebook')

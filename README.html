@@ -6,9 +6,9 @@
   <title></title>
 </head>
 <body>
-<h1 id="epub-metadata-editor">Epub Metadata Editor</h1>
-<p><code>epubmeta</code> is a tool for editing metadata in an Epub file. When the first edit is made, the entire Epub file is backed up to a file embedded in the Epub package in the path <code>META-INF/source/</code>, and the original metadata is backed up to <code>META-INF/original_metadata.yaml</code> for each resetting of only the fields edited by this program.</p>
-<p>Calibre is used to write metadata changes to the Epub file.</p>
+<h1 id="ebook-metadata-editor">Ebook Metadata Editor</h1>
+<p><code>ebmeta</code> is a tool for editing metadata in an ebook file (Epub, Mobipocket, or PDF). When the first edit is made, the entire ebook file is backed up to <code>./.backup/FILE.backup</code> under the folder where the working file is, to allow for safely resetting.</p>
+<p>Calibre is used to write metadata changes to the ebook file.</p>
 <p>Fields that are available for editing are:</p>
 <ul>
 <li>title; title sort</li>
@@ -37,33 +37,33 @@
 <pre><code>sudo apt-get install pandoc python-beautifulsoup python-yaml zenity
 </code></pre>
 <h2 id="installation">Installation</h2>
-<p>No installation script is provided. The simplest way to install mdepub is to download the source as a <code>.zip</code> or <code>.tar.gz</code>, or <code>git clone</code>. Put the package files in <code>~/Apps/epubmeta</code> and then do this:</p>
-<pre><code>chmod +x ~/Apps/epubmeta/__main__.py
-ln --symbolic ~/Apps/epubmeta/__main.py__ ~/bin/epubmeta
+<p>No installation script is provided. The simplest way to install ebmeta is to download the source as a <code>.zip</code> or <code>.tar.gz</code>, or <code>git clone</code>. Put the package files in <code>~/Apps/ebmeta</code> and then do this:</p>
+<pre><code>chmod +x ~/Apps/ebmeta/__main__.py
+ln --symbolic ~/Apps/ebmeta/__main.py__ ~/bin/ebmeta
 </code></pre>
-<p>(Make sure <code>~/bin</code> is in your <code>$PATH</code> variable when you run <code>epubmeta</code>.)</p>
+<p>(Make sure <code>~/bin</code> is in your <code>$PATH</code> variable when you run <code>ebmeta</code>.)</p>
 <h3 id="windows">Windows</h3>
-<p><code>epubmeta</code> should work in Windows as well. Make sure all your requirements are installed and make sure you can run <code>python</code>, <code>pandoc</code>, and <code>ebook-convert</code> by just calling their name from the command line. (You probably will have to edit your <code>$PATH</code> environment variable.)</p>
-<p>To invoke <code>epubmeta</code>, you can either do</p>
-<pre><code>python -m [path to...]\epubmeta.zip [epubmeta arguments]
+<p><code>ebmeta</code> should work in Windows as well. Make sure all your requirements are installed and make sure you can run <code>python</code>, <code>pandoc</code>, and <code>ebook-convert</code> by just calling their name from the command line. (You probably will have to edit your <code>$PATH</code> environment variable.)</p>
+<p>To invoke <code>ebmeta</code>, you can either do</p>
+<pre><code>python -m [path to...]\ebmeta.zip [ebmeta arguments]
 </code></pre>
-<p>Or create a batch file in your <code>$PATH</code> that calls Python in this way and passes command line arguments through to epubmeta.</p>
+<p>Or create a batch file in your <code>$PATH</code> that calls Python in this way and passes command line arguments through to ebmeta.</p>
 <h2 id="usage">Usage</h2>
-<p><strong>Backup an epub file as an embedded file within itself</strong>:</p>
-<pre><code>epubmeta backup FILE.EPUB
+<p><strong>Backup an ebook file as an embedded file within itself</strong>:</p>
+<pre><code>ebmeta backup FILE
 </code></pre>
-<p>Copies FILE.EPUB to <code>./META-INF/source/FILE.EPUB</code> file within the FILE.EPUB package. If you screw up the outer FILE.EPUB later on, you can just extract the backup using a Zip archiving tool.</p>
+<p>Copies <code>FILE</code> to <code>./.backup/FILE.backup</code> under the folder containing <code>FILE</code>. If you screw up the outer <code>FILE</code> later on, you can just extract the backup using a Zip archiving tool.</p>
 <p><strong>Display metadata on the command line</strong>:</p>
-<pre><code>epubmeta display FILE.EPUB
+<pre><code>ebmeta display FILE
 </code></pre>
 <p><strong>Edit metadata in a popup dialog box</strong>:</p>
-<pre><code>epubmeta edit FILE.EPUB
+<pre><code>ebmeta edit FILE
 </code></pre>
 <p><strong>Reset metadata to state before first edit with this program</strong>:</p>
-<pre><code>epubmeta reset FILE.EPUB
+<pre><code>ebmeta reset FILE
 </code></pre>
 <p><strong>Get all command line help</strong>:</p>
-<pre><code>epubmeta --help
+<pre><code>ebmeta --help
 </code></pre>
 </body>
 </html>

@@ -2,7 +2,7 @@
 import os
 import runpy
 
-PKG = 'epubmeta'
+PKG = 'ebmeta'
 
 try:
     run_globals = runpy.run_module(PKG, run_name='__main__', alter_sys=True)

@@ -1,4 +1,4 @@
-"""epubmeta actions -- these modules do the actual work."""
+"""ebmeta actions -- these modules do the actual work."""
 
 import backup
 import display

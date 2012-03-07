@@ -1,6 +1,6 @@
 Copyright © 2012 Brendan Kidwell
 
-Use of epubmeta, its test code, and documentation are subject to the following
+Use of ebmeta, its test code, and documentation are subject to the following
 BSD-style license:
 
 Permission to use, copy, modify, and/or distribute this software for any purpose

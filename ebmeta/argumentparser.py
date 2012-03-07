@@ -1,20 +1,21 @@
-"""Module for handling epubmeta command line arguments."""
+"""Module for handling ebmeta command line arguments."""
 
 import argparse
 import logging
 import textwrap
-import epubmeta
+import ebmeta
 
 log = logging.getLogger('argumentparser')
 
 help="""\
-epubmeta is a tool for editing metadata in an Epub file.
+ebmeta is a tool for editing metadata in an ebook file (Epub,
+Mobipocket, or PDF).
 """
 
 epilog="""\
 actions:
-  backup       Backup FILE.EPUB to an embedded file inside FILE.EPUB
-  display      Display metadata from FILE.EPUB
+  backup       Backup FILE to an ./.backup/FILE.backup
+  display      Display metadata from FILE
   edit         Edit metadata using zenity
   reset        Reset metadata back to what it was before the first edit
   version      Print epubmeta version number
@@ -22,7 +23,7 @@ actions:
 """
 
 def setup_args(parser):
-    """Add epubmeta argument structure to an instance of ArgumentParser."""
+    """Add ebmeta argument structure to an instance of ArgumentParser."""
 
     parser.add_argument(
         'action', nargs='?', metavar='action',
@@ -30,12 +31,12 @@ def setup_args(parser):
         help="Which action to perform."
     )
     parser.add_argument(
-        'filename', nargs='?', metavar='FILE.EPUB',
-        help="Path to an EPUB file."
+        'filename', nargs='?', metavar='FILE',
+        help="Path to an ebook file."
     )
 
 class ArgumentParser(argparse.ArgumentParser):
-    """Extend argparse.ArgumentParser with the argument structure for mdepub."""
+    """Extend argparse.ArgumentParser with the argument structure for ebmeta."""
 
     def __init__(self):
         super(ArgumentParser, self).__init__(

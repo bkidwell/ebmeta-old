@@ -1,4 +1,4 @@
-"""Module containing template files used in epubmeta output."""
+"""Module containing template files used in ebmeta output."""
 
 import pkgutil
 import sys

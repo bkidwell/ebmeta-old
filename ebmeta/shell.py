@@ -1,4 +1,4 @@
-"""Provide shell subprocess functions for epubmeta."""
+"""Provide shell subprocess functions for ebmeta."""
 
 import logging
 import os

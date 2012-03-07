@@ -1,16 +1,16 @@
-"""Backup FILE.EPUB to an embedded file inside FILE.EPUB."""
+"""Backup FILE to an embedded file inside FILE."""
 
 import logging
 import os.path
 from zipfile import ZipFile
-import epubmeta
+import ebmeta
 
 log = logging.getLogger('backup')
 
 def run():
     """Run this action."""
 
-    path = epubmeta.arguments.filename
+    path = ebmeta.arguments.filename
     backup_filename = os.path.basename(path)
     found_backup = False
 
