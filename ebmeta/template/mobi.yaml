@@ -5,8 +5,6 @@ authors: $authors
 
 publisher: $publisher
 
-book producer: $book_producer
-
 isbn: $isbn
 language: $language
 
