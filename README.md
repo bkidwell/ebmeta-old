@@ -8,7 +8,7 @@ working file is, to allow for safely resetting.
 
 Calibre is used to write metadata changes to the ebook file.
 
-Fields that are available for editing are:
+Fields that are available for editing in Epub files are:
 
 * title; title sort
 * authors; author sort
@@ -19,6 +19,8 @@ Fields that are available for editing are:
 * series; series index
 * description
 
+Fewer fields are available in Mobipocket and PDF files.
+
 
 ## Requirements
 
@@ -26,6 +28,8 @@ Fields that are available for editing are:
 * Beautiful Soup -- HTML/XML stream parsing and manipulation for Python
 * Calibre (Calibre's `ebook-convert` command is used to manipulate and
   build EPUB package files.)
+* exiftool -- for writing Title and Author fields in PDF files because
+  Calibre seems to fail at that
 * pandoc -- all purpose converter to and from Markdown syntax
 * Python 2.7
 * YAML for Python -- minimal config / serialization syntax
@@ -39,7 +43,7 @@ Install Calibre on a Unix box:
 
 Ubuntu packages for the rest of the requirements:
 
-    sudo apt-get install pandoc python-beautifulsoup python-yaml zenity
+    sudo apt-get install libimage-exiftool-perl pandoc python-beautifulsoup python-yaml zenity
 
 
 ## Installation
@@ -60,7 +64,7 @@ the package files in `~/Apps/ebmeta` and then do this:
 
 `ebmeta` should work in Windows as well. Make sure all your requirements
 are installed and make sure you can run `python`, `pandoc`, and
-`ebook-convert` by just calling their name from the command line. (You
+`ebook-meta` by just calling their name from the command line. (You
 probably will have to edit your `$PATH` environment variable.)
 
 To invoke `ebmeta`, you can either do
@@ -74,7 +78,7 @@ passes command line arguments through to ebmeta.
 ## Usage
 
 
-**Backup an ebook file as an embedded file within itself**:
+**Backup an ebook file**:
 
     ebmeta backup FILE
 

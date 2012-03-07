@@ -9,7 +9,7 @@
 <h1 id="ebook-metadata-editor">Ebook Metadata Editor</h1>
 <p><code>ebmeta</code> is a tool for editing metadata in an ebook file (Epub, Mobipocket, or PDF). When the first edit is made, the entire ebook file is backed up to <code>./.backup/FILE.backup</code> under the folder where the working file is, to allow for safely resetting.</p>
 <p>Calibre is used to write metadata changes to the ebook file.</p>
-<p>Fields that are available for editing are:</p>
+<p>Fields that are available for editing in Epub files are:</p>
 <ul>
 <li>title; title sort</li>
 <li>authors; author sort</li>
@@ -20,10 +20,12 @@
 <li>series; series index</li>
 <li>description</li>
 </ul>
+<p>Fewer fields are available in Mobipocket and PDF files.</p>
 <h2 id="requirements">Requirements</h2>
 <ul>
 <li>Beautiful Soup -- HTML/XML stream parsing and manipulation for Python</li>
 <li>Calibre (Calibre's <code>ebook-convert</code> command is used to manipulate and build EPUB package files.)</li>
+<li>exiftool -- for writing Title and Author fields in PDF files because Calibre seems to fail at that</li>
 <li>pandoc -- all purpose converter to and from Markdown syntax</li>
 <li>Python 2.7</li>
 <li>YAML for Python -- minimal config / serialization syntax</li>
@@ -34,7 +36,7 @@
 <pre><code>sudo python -c &quot;import sys; py3 = sys.version_info[0] &gt; 2; u = __import__('urllib.request' if py3 else 'urllib', fromlist=1); exec(u.urlopen('http://status.calibre-ebook.com/linux_installer').read()); main()&quot;
 </code></pre>
 <p>Ubuntu packages for the rest of the requirements:</p>
-<pre><code>sudo apt-get install pandoc python-beautifulsoup python-yaml zenity
+<pre><code>sudo apt-get install libimage-exiftool-perl pandoc python-beautifulsoup python-yaml zenity
 </code></pre>
 <h2 id="installation">Installation</h2>
 <p>No installation script is provided. The simplest way to install ebmeta is to download the source as a <code>.zip</code> or <code>.tar.gz</code>, or <code>git clone</code>. Put the package files in <code>~/Apps/ebmeta</code> and then do this:</p>
@@ -43,13 +45,13 @@ ln --symbolic ~/Apps/ebmeta/__main.py__ ~/bin/ebmeta
 </code></pre>
 <p>(Make sure <code>~/bin</code> is in your <code>$PATH</code> variable when you run <code>ebmeta</code>.)</p>
 <h3 id="windows">Windows</h3>
-<p><code>ebmeta</code> should work in Windows as well. Make sure all your requirements are installed and make sure you can run <code>python</code>, <code>pandoc</code>, and <code>ebook-convert</code> by just calling their name from the command line. (You probably will have to edit your <code>$PATH</code> environment variable.)</p>
+<p><code>ebmeta</code> should work in Windows as well. Make sure all your requirements are installed and make sure you can run <code>python</code>, <code>pandoc</code>, and <code>ebook-meta</code> by just calling their name from the command line. (You probably will have to edit your <code>$PATH</code> environment variable.)</p>
 <p>To invoke <code>ebmeta</code>, you can either do</p>
 <pre><code>python -m [path to...]\ebmeta.zip [ebmeta arguments]
 </code></pre>
 <p>Or create a batch file in your <code>$PATH</code> that calls Python in this way and passes command line arguments through to ebmeta.</p>
 <h2 id="usage">Usage</h2>
-<p><strong>Backup an ebook file as an embedded file within itself</strong>:</p>
+<p><strong>Backup an ebook file</strong>:</p>
 <pre><code>ebmeta backup FILE
 </code></pre>
 <p>Copies <code>FILE</code> to <code>./.backup/FILE.backup</code> under the folder containing <code>FILE</code>. If you screw up the outer <code>FILE</code> later on, you can just extract the backup using a Zip archiving tool.</p>
