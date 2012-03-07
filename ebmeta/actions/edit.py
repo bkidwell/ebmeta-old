@@ -48,20 +48,23 @@ def run(new_yaml_text=None):
             if key == 'authors':
                 if d1[key] != d2[key]:
                     changes[key] = d2[key]
-                    changes['author sort'] = d2['author sort']
+                    if d2.has_key('author sort'): changes['author sort'] = d2['author sort']
             if key == 'title':
                 if d1[key] != d2[key]:
                     changes[key] = d2[key]
-                    changes['title sort'] = d2['title sort']
+                    if d2.has_key('title sort'): changes['title sort'] = d2['title sort']
             else:
                 if d1[key] != d2[key]: changes[key] = d2[key]
         log.debug("The following keys changed: %s", ' '.join(changes.keys()))
 
         backup.run() # backup only if backup doesn't exist
 
-        writeChanges(ebook, changes)
+        if ebook.type == 'pdf':
+            write_changes_pdf(ebook, changes)
+        else:
+            write_changes(ebook, changes)
 
-def writeChanges(ebook, changes):
+def write_changes(ebook, changes):
     """Write the metadata in the given dictionary into the ebook file."""
 
     path = ebmeta.arguments.filename
@@ -154,3 +157,26 @@ def quote(text):
     """Change " to \\"."""
 
     return unicode(text).replace('"', '\\"')
+
+def write_changes_pdf(ebook, changes):
+    """Write the metadata in the given dictionary into the pdf file."""
+
+    path = ebmeta.arguments.filename
+
+    for key in changes.keys():
+        if changes[key] == None: changes[key] = ""
+
+    args = [
+        "exiftool",
+        '"{}"'.format(path)
+    ]
+    for a, b in (
+        ('Author', 'authors'),
+        ('Title',  'title')
+    ):
+        if changes.has_key(b): args.append("-{}=\"{}\"".format(a, quote(changes[b])))
+
+    if len(args) > 2:
+        # Run ebook-meta
+        # shell.run(" ".join(args), shell=True)
+        shell.pipe(" ".join(args), shell=True)

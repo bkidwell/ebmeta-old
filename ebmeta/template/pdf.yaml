@@ -1,0 +1,4 @@
+title: $title
+
+# List authors separated by ampersands (&)
+authors: $authors
