@@ -45,7 +45,8 @@ ln --symbolic ~/Apps/ebmeta/__main.py__ ~/bin/ebmeta
 </code></pre>
 <p>(Make sure <code>~/bin</code> is in your <code>$PATH</code> variable when you run <code>ebmeta</code>.)</p>
 <h3 id="windows">Windows</h3>
-<p><code>ebmeta</code> should work in Windows as well. Make sure all your requirements are installed and make sure you can run <code>python</code>, <code>pandoc</code>, and <code>ebook-meta</code> by just calling their name from the command line. (You probably will have to edit your <code>$PATH</code> environment variable.)</p>
+<p><code>ebmeta</code> might work in Windows as well. Make sure all your requirements are installed and make sure you can run <code>python</code>, <code>pandoc</code>, and <code>ebook-meta</code> by just calling their name from the command line. (You probably will have to edit your <code>$PATH</code> environment variable.)</p>
+<p>Your biggest hurdle will probably be finding a viable Zenity build. I did see one after a quick search but I have not evaluated it. Alternatively, you could edit zenity.py in this package and adapt it to call WordPad instead. YMMV.</p>
 <p>To invoke <code>ebmeta</code>, you can either do</p>
 <pre><code>python -m [path to...]\ebmeta.zip [ebmeta arguments]
 </code></pre>

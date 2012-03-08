@@ -62,10 +62,15 @@ the package files in `~/Apps/ebmeta` and then do this:
 ### Windows
 
 
-`ebmeta` should work in Windows as well. Make sure all your requirements
+`ebmeta` might work in Windows as well. Make sure all your requirements
 are installed and make sure you can run `python`, `pandoc`, and
 `ebook-meta` by just calling their name from the command line. (You
 probably will have to edit your `$PATH` environment variable.)
+
+Your biggest hurdle will probably be finding a viable Zenity build. I
+did see one after a quick search but I have not evaluated it.
+Alternatively, you could edit zenity.py in this package and adapt it to
+call WordPad instead. YMMV.
 
 To invoke `ebmeta`, you can either do
 
