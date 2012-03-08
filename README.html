@@ -8,7 +8,7 @@
 <body>
 <h1 id="ebook-metadata-editor">Ebook Metadata Editor</h1>
 <p><code>ebmeta</code> is a tool for editing metadata in an ebook file (Epub, Mobipocket, or PDF). When the first edit is made, the entire ebook file is backed up to <code>./.backup/FILE.backup</code> under the folder where the working file is, to allow for safely resetting.</p>
-<p>Calibre is used to write metadata changes to the ebook file.</p>
+<p>Calibre and exiftool are used to write metadata changes to the ebook file, but <code>ebmeta</code> doesn't interact with any databases like your Calibre library. <code>ebmeta</code> allows you to edit metadata in your ebook library directly in your file collection.</p>
 <p>Fields that are available for editing in Epub files are:</p>
 <ul>
 <li>title; title sort</li>

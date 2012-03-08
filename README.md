@@ -6,7 +6,10 @@ Mobipocket, or PDF). When the first edit is made, the entire ebook file
 is backed up to `./.backup/FILE.backup` under the folder where the
 working file is, to allow for safely resetting.
 
-Calibre is used to write metadata changes to the ebook file.
+Calibre and exiftool are used to write metadata changes to the ebook
+file, but `ebmeta` doesn't interact with any databases like your Calibre
+library. `ebmeta` allows you to edit metadata in your ebook library
+directly in your file collection.
 
 Fields that are available for editing in Epub files are:
 
