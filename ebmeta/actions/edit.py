@@ -83,14 +83,14 @@ def write_changes(ebook, changes):
         ('language',      'language'),
         ('pubdate',       'publication date'),
         ('publisher',     'publisher'),
-        ('rating',        'rating'),
         ('series',        'series'),
-        ('series-index',  'series index'),
         ('title',         'title')
     ):
         if changes.has_key(b): args.append("--{}=\"{}\"".format(a, quote(changes[b])))
 
     for a, b in (
+        ('rating',        'rating'), # rating can't be unset once it's set, from ebook-meta CLI
+        ('index',         'series index'), # series index can't be unset either
         ('author-sort',   'author sort'),
         ('title-sort',    'title sort')
     ):
